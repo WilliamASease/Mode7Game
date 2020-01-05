@@ -1,0 +1,30 @@
+
+			Initializer (Creates Everything)	
+			^
+			|
+			CENTRAL (Holds all Game Data, References to Objects, Helper Methods)
+			^
+			|<- Tick <- OverWorld / Battle / Cutscene EXTENDS Tick
+			|
+			|<- InputStream (Own Thread)
+			|
+			|<- FrameWorker <- Frame <- OverWorldFrame/BattleFrame/CutsceneFrame EXTENDS FrameInstruction
+				
+			PRIMARY DATA LOOP
+			Initializer
+			 While true {
+			 Central
+			 	Tick-> OverWorld.tick() || Battle.tick() || Cutscene.tick();
+			 	FrameWorker.paint() -> OverWorldFrame.render() || BattleFrame.render() || CutsceneFrame.render()
+			
+			
+			SECONDARY DATA LOOP (OTHER THREAD) 
+			Initializer -> InputStream.run();
+				While true
+				{
+					InputStream.update();
+				}
+				
+				
+			NOTES
+			--Central is loaded with Public Fields. No Getters or setters. Maximum effeciency
