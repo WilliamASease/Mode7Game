@@ -9,7 +9,7 @@ import DevTools.DataReader;
 public class ColorMap 
 {
 	Color[] colors;
-	byte[][] map;
+	int[][] map;
 	
 	public ColorMap(String path)
 	{
@@ -17,7 +17,7 @@ public class ColorMap
 		String[] raw = DataReader.readRawText("imagedata/" + path + ".PNG");
 		ArrayList<Integer> bank = new ArrayList<Integer>();
 		HashMap<Integer, Integer> builderMap = new HashMap<Integer, Integer>();
-		map = new byte[Integer.parseInt(raw[0].split(" ")[0])]
+		map = new int[Integer.parseInt(raw[0].split(" ")[0])]
 				[Integer.parseInt(raw[0].split(" ")[1])];
 		int x = 0;
 		int y = 0;
@@ -29,13 +29,14 @@ public class ColorMap
 				builderMap.put(cur, bank.size());
 				bank.add(cur);
 			}
-			if (builderMap.get(cur) > 0xFF)
+			//A previous implementation only supported 31 colors.
+			/*if (builderMap.get(cur) > 0xFF)
 			{
 				System.err.println("Object had more than 31 Colors. Crashing.");
 				System.err.println("for" + path);
 				System.exit(0);
-			}
-			map[x][y] = (byte) (builderMap.get(cur) & 0xFF);
+			}*/
+			map[x][y] = builderMap.get(cur) & 0xFF;
 			//map[x][y] = (builderMap.get(cur));
 			x++;
 			if (x >= map.length)
